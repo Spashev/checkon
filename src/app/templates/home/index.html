@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>Home</title>
+</head>
+<body>
+    <form id="userForm">
+        <label for="nameInput">Name:</label>
+        <input type="text" id="nameInput" name="name"><br>
+        <label for="emailInput">Email:</label>
+        <input type="email" id="emailInput" name="email"><br>
+        <button type="submit" id="addUserBtn">Add User</button>
+    </form>
+<script>
+    document.getElementById('userForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const name = document.getElementById('nameInput').value;
+        const email = document.getElementById('emailInput').value;
+        fetch('http://localhost:8000/add-users', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name, email })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('User added:', data);
+                // Add your logic to handle the response here
+            })
+            .catch(error => {
+                console.error('Error adding user:', error);
+                // Add your error handling logic here
+            });
+    });
+</script>
+</body>
+</html>

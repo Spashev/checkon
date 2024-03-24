@@ -1,0 +1,38 @@
+version: "3.7"
+services:
+  checkon_app:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+    image: checkon_app
+    container_name: checkon_app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./src/:/var/www/html
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      PHP_IDE_CONFIG: serverName=server
+  
+  checkon_nginx:
+    image: nginx:latest
+    container_name: checkon_nginx
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - ./src:/var/www/html
+      - ./docker/conf/nginx:/etc/nginx/conf.d
+  
+  checkon_mysql:
+    image: mysql:latest
+    container_name: checkon_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: checkon
+    ports:
+      - "3306:3306"    
+    volumes:
+      - ./docker/mysql/dump.sql:/docker-entrypoint-initdb.d/dump.sql
