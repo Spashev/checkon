@@ -1,20 +1,24 @@
 <?php
 
-
 use App\Abstracts\Request;
+use App\Controllers\Home\HomeController;
+use App\Controllers\Home\UserController;
+use App\Services\UserService;
 
-$dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
+
+$dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
     $request = new Request();
-    $r->addRoute('GET', '/', function () use($request) {
-        echo (new \App\Controllers\Home\HomeController())->index($request);
+    $service = new UserService();
+    $r->addRoute('GET', '/', function () use ($request) {
+        echo (new HomeController())->index($request);
     });
-    $r->addRoute('GET', '/users', function () use($request) {
-        echo (new \App\Controllers\Home\UserController())->index($request);
+    $r->addRoute('GET', '/users', function () use ($request, $service) {
+        echo (new UserController($service))->index($request);
     });
-    $r->addRoute('POST', '/users', function () use($request) {
-        echo (new \App\Controllers\Home\UserController())->create($request);
+    $r->addRoute('POST', '/users', function () use ($request, $service) {
+        echo (new UserController($service))->create($request);
     });
-    $r->addRoute('DELETE', '/users', function () use($request) {
-        echo (new \App\Controllers\Home\UserController())->delete($request);
+    $r->addRoute('DELETE', '/users', function () use ($request, $service) {
+        echo (new UserController($service))->delete($request);
     });
 });

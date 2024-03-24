@@ -58,6 +58,27 @@ abstract class ModelAbstract extends MysqlConnectorAbstract
 
         return $this->pdo->lastInsertId();
     }
+
+    public function update(array $fields): bool
+    {
+        $setValues = [];
+        foreach ($fields as $key => $value) {
+            $setValues[] = "$key = ?";
+        }
+        $setValues = implode(', ', $setValues);
+
+        $query = sprintf(
+            "UPDATE %s SET %s %s",
+            $this->table,
+            $setValues,
+            $this->where
+        );
+
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(array_merge(array_values($fields), $this->whereParams));
+
+        return true;
+    }
     
     public function delete(): bool
     {

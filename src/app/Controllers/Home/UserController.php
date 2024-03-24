@@ -4,29 +4,26 @@ declare(strict_types=1);
 
 namespace App\Controllers\Home;
 
-use App\Abstracts\Request;
-use App\Services\UserService;
+use App\Contracts\RequestInterface;
+use App\Contracts\ServiceInterface;
 
 final class UserController
 {
-    private UserService|null $service = null;
-    
-    public function __construct()
+    public function __construct(private ServiceInterface $service)
     {
-        $this->service = new UserService();    
     }
     
-    public function index(Request $request): string
+    public function index(RequestInterface $request): string
     {
         return $this->service->all($request);
     }
     
-    public function create(Request $request): string
+    public function create(RequestInterface $request): string
     {
         return $this->service->create($request);
     }
     
-    public function delete(Request $request): bool
+    public function delete(RequestInterface $request): bool
     {
         return $this->service->delete($request);
     }
