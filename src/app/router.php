@@ -1,11 +1,14 @@
 <?php
 
 
+use App\Abstracts\Request;
+
 $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
-    $r->addRoute('GET', '/', function () {
-        echo (new App\Controllers\Home\HomeController())->index();
+    $request = new Request();
+    $r->addRoute('GET', '/', function () use($request) {
+        echo (new \App\Controllers\Home\HomeController())->index($request);
     });
-    $r->addRoute('POST', '/add-users', function () {
-        echo (new \App\Controllers\Home\UserController())->create();
+    $r->addRoute('POST', '/add-users', function () use($request) {
+        echo (new \App\Controllers\Home\UserController())->create($request);
     });
 });

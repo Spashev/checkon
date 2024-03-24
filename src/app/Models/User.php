@@ -6,7 +6,7 @@ namespace App\Models;
 
 use App\Abstracts\ModelAbstract;
 
-class User extends ModelAbstract
+final class User extends ModelAbstract
 {
     protected string $table = 'users';
     
