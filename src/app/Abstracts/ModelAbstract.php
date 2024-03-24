@@ -41,7 +41,7 @@ abstract class ModelAbstract extends MysqlConnectorAbstract
         return $stmt->fetchAll();
     }
 
-    public function create(array $fields): bool
+    public function create(array $fields)
     {
         $keys = array_keys($fields);
         $placeholders = rtrim(str_repeat('?, ', count($keys)), ', ');
@@ -53,11 +53,10 @@ abstract class ModelAbstract extends MysqlConnectorAbstract
             $placeholders
         );
 
-        print_r($query);
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(array_values($fields));
 
-        return true;
+        return $this->pdo->lastInsertId();
     }
     
     public function delete(): bool

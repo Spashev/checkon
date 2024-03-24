@@ -22,14 +22,90 @@
             </form>
         </div>
     </div>
+    <div class="card mt-3">
+        <div class="card-body">
+            <h5 class="card-title">Users</h5>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Username</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody id="userTableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 <script>
+    window.onload = function () {
+        fetch('http://localhost:8000/users')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                displayUsers(data);
+            })
+            .catch(error => {
+                alert('Error retrieving users');
+            });
+    };
+
+    function displayUsers(users) {
+        const tableBody = document.getElementById('userTableBody');
+
+        users.forEach(user => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${user.username}</td>
+                <td>${user.email}</td>
+                <td>
+                    <button class="btn btn-danger" onclick="removeUser(${user.id})">Remove</button>
+                </td>
+            `;
+            row.setAttribute('data-id', user.id);
+            tableBody.appendChild(row);
+        });
+    }
+
+
+    function removeUser(userId) {
+        fetch(`http://localhost:8000/users`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({'id':userId})
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('User removed:', data);
+                const row = document.querySelector(`#userTableBody tr[data-id="${userId}"]`);
+                if (row) {
+                    row.remove();
+                }
+            })
+            .catch(error => {
+                alert('Error removing user');
+            });
+    }
+
     document.getElementById('userForm').addEventListener('submit', function (event) {
         event.preventDefault();
         const username = document.getElementById('nameInput').value;
         const email = document.getElementById('emailInput').value;
-        fetch('http://localhost:8000/add-users', {
+        fetch('http://localhost:8000/users', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -44,11 +120,10 @@
             })
             .then(data => {
                 console.log('User added:', data);
-                // Add your logic to handle the response here
+                displayUsers([data]);
             })
             .catch(error => {
-                console.error('Error adding user:', error);
-                // Add your error handling logic here
+                alert('Error adding user invalid data');
             });
     });
 </script>

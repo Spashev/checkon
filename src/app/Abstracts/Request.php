@@ -15,7 +15,7 @@ class Request implements RequestInterface
     
     public function toArray(): array
     {
-        return json_decode($this->getBody(), true, 512, JSON_THROW_ON_ERROR);
+        return json_decode($this->getBody(), true);
     }
     
     public function validateRequiredFields($data): bool

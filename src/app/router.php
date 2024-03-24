@@ -11,7 +11,10 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
     $r->addRoute('GET', '/users', function () use($request) {
         echo (new \App\Controllers\Home\UserController())->index($request);
     });
-    $r->addRoute('POST', '/add-users', function () use($request) {
+    $r->addRoute('POST', '/users', function () use($request) {
         echo (new \App\Controllers\Home\UserController())->create($request);
+    });
+    $r->addRoute('DELETE', '/users', function () use($request) {
+        echo (new \App\Controllers\Home\UserController())->delete($request);
     });
 });
