@@ -9,9 +9,4 @@ use App\Abstracts\ModelAbstract;
 final class User extends ModelAbstract
 {
     protected string $table = 'users';
-    
-    public function create() 
-    {
-        return 'get users';
-    }
 }

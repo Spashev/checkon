@@ -27,14 +27,14 @@
 <script>
     document.getElementById('userForm').addEventListener('submit', function (event) {
         event.preventDefault();
-        const name = document.getElementById('nameInput').value;
+        const username = document.getElementById('nameInput').value;
         const email = document.getElementById('emailInput').value;
         fetch('http://localhost:8000/add-users', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({name, email})
+            body: JSON.stringify({username, email})
         })
             .then(response => {
                 if (!response.ok) {

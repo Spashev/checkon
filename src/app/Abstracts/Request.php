@@ -8,6 +8,11 @@ use App\Contracts\RequestInterface;
 
 class Request implements RequestInterface
 {
+    public function get($field = null) 
+    {
+        return $this->toArray()[$field] ?? null;
+    }
+    
     public function toArray(): array
     {
         return json_decode($this->getBody(), true, 512, JSON_THROW_ON_ERROR);

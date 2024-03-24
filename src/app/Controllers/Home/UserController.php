@@ -15,12 +15,27 @@ final class UserController
         $this->model = new User();    
     }
     
-    public function create(Request $request): string
+    public function index(Request $request): string
+    {
+        return json_encode($this->model->all(), JSON_THROW_ON_ERROR);
+    }
+    
+    public function create(Request $request): bool
     {
         $request->validateRequiredFields([
             'email' => 'required|email|min:3',
-            'name' => 'required|min:3',
+            'username' => 'required|min:3',
         ]);
-        return $this->model->create($request);
+
+        return $this->model->create($request->toArray());
+    }
+    
+    public function delete(Request $request): bool
+    {
+        $request->validateRequiredFields([
+            'id' => 'required',
+        ]);
+
+        return $this->model->where(['id' => $request->get('id')])->delete();
     }
 }
