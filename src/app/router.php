@@ -1,8 +1,8 @@
 <?php
 
 use App\Abstracts\Request;
-use App\Controllers\Home\HomeController;
-use App\Controllers\Home\UserController;
+use App\Controllers\Main\HomeController;
+use App\Controllers\Main\UserController;
 use App\Services\UserService;
 
 

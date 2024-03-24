@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controllers\Home;
+namespace App\Controllers\Main;
 
 use App\Contracts\RequestInterface;
 use App\Contracts\ServiceInterface;
