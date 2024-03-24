@@ -37,6 +37,7 @@ abstract class ModelAbstract extends MysqlConnectorAbstract
 
         $stmt = $this->pdo->prepare($query);
         $stmt->execute($this->whereParams);
+        $this->cleanWhere();
 
         return $stmt->fetchAll();
     }
@@ -55,6 +56,7 @@ abstract class ModelAbstract extends MysqlConnectorAbstract
 
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(array_values($fields));
+        $this->cleanWhere();
 
         return $this->pdo->lastInsertId();
     }
@@ -76,7 +78,8 @@ abstract class ModelAbstract extends MysqlConnectorAbstract
 
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(array_merge(array_values($fields), $this->whereParams));
-
+        $this->cleanWhere();
+        
         return true;
     }
     
@@ -90,7 +93,14 @@ abstract class ModelAbstract extends MysqlConnectorAbstract
 
         $stmt = $this->pdo->prepare($query);
         $stmt->execute($this->whereParams);
+        $this->cleanWhere();
 
         return true;
+    }
+    
+    private function cleanWhere(): void
+    {
+        $this->where = '';
+        $this->whereParams = [];
     }
 }

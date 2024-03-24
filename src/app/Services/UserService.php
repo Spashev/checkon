@@ -30,8 +30,8 @@ class UserService implements ServiceInterface
             'username' => 'required|min:3',
         ]);
         
+        $userId = $this->model->create($request->toArray());
         $total = $this->calculate->run($this->model->all());
-        $userId = $this->model->create($request->toArray() + ['total' => $total]);
         $this->model->update(['total' => $total]);
         
         return json_encode($request->toArray() + ['id' => $userId, 'total' => $total], JSON_THROW_ON_ERROR);

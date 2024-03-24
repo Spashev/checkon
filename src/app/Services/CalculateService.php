@@ -12,7 +12,7 @@ class CalculateService
     {
         $total = self::TOTAL_SUM;
         if(count($users) > 0) {
-            $total = self::TOTAL_SUM / (count($users) + 1);
+            $total = self::TOTAL_SUM / count($users);
         }
         
         return round($total, 2);
